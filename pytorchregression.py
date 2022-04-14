@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 # x_data = torch.Tensor([[1.0], [2.0], [3.0]])
 # y_data = torch.Tensor([[2.0], [4.0], [6.0]])
-#
-#
+
+
 # class LinearModel(torch.nn.Module):
 #     def __init__(self):
 #         super(LinearModel, self).__init__()
@@ -37,33 +37,50 @@ import matplotlib.pyplot as plt
 # print("w=",model.linear.weight.item())
 # print("b=",model.linear.bias.item())
 #
-# x_test =torch.Tensor([[4.0]])
+# x_test =torch.Tensor([[5.0]])
 # y_test = model(x_test)
 # print("y_pred",y_test.data)
 
-x_data = torch.Tensor([[1.0], [2.0],[3.0]])
-y_data = torch.Tensor([[2.0], [4.0],[6.0]])
 
-class LinearModel(torch.nn.Module):
+x_data = torch.Tensor([[1.0,5,4,3,2,1,0,5], [2.0,3,2,4,5,3,5,1], [3.0,5,2,3,4,1,2,3]])
+y_data = torch.Tensor([[1], [1], [0]])
+# import torch.nn.functional as F
+class LogisticRegressionModel(torch.nn.Module):#所有均要继承module
     def __init__(self):
-        super(LinearModel, self).__init__()
-        self.linear = torch.nn.Linear(1,1)
+        super(LogisticRegressionModel,self).__init__()#必须要有
+        self.linear1=torch.nn.Linear(8,6)
+        self.linear2=torch.nn.Linear(6,4)
+        self.linear3=torch.nn.Linear(4,1)
+        self.activate=torch.nn.Sigmoid()
+        #self.linear=torch.sigmoid(1,1)
 
     def forward(self,x):
-        y_pred = self.linear(x)
-        return y_pred
+        x=self.activate(self.linear1(x))
+        x = self.activate(self.linear2(x))
+        x = self.activate(self.linear3(x))
+        return x
 
-model = LinearModel()
+model = LogisticRegressionModel()
+criteration = torch.nn.BCELoss(size_average=True)
+optimizer = torch.optim.SGD(model.parameters(),lr=0.01)#告诉优化器哪些参数，优化
 
-criterion = torch.nn.MSELoss(reduction='sum')
-optimizer = torch.optim.SGD(model.parameters(), lr=0.09)
 
-for epoch in range(1000):
-    Y_pred = model(x_data)
-    loss = criterion(Y_pred, y_data)
-
+for epoch in range(10):
+    y_pred=model(x_data)
+    loss = criteration(y_pred,y_data)
+    print(epoch,loss)
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-print("w=", model.linear.weight.item())
-print("b=", model.linear.bias.item())
+
+# print("w=",model.linear.weight.item())
+# print("b=",model.linear.bias.item())
+x_test =torch.Tensor([[1.0,5,4,3,2,1,0,5]])
+y_test = model(x_test)
+print(y_test.item())
+
+
+
+
+
+
