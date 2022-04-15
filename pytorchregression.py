@@ -61,11 +61,11 @@ class LogisticRegressionModel(torch.nn.Module):#所有均要继承module
         return x
 
 model = LogisticRegressionModel()
-criteration = torch.nn.BCELoss(size_average=True)
+criteration = torch.nn.BCELoss(reduction='mean')
 optimizer = torch.optim.SGD(model.parameters(),lr=0.01)#告诉优化器哪些参数，优化
 
 
-for epoch in range(10):
+for epoch in range(100000):
     y_pred=model(x_data)
     loss = criteration(y_pred,y_data)
     print(epoch,loss)
