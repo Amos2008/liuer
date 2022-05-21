@@ -1,10 +1,11 @@
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
+
 class DiabetesDataset(Dataset):
-    def __init__(self,filepath):
-        xy = np.loadtxt(filepath,delimiter=',',dtype=np.float32)
-        self.len=xy.shape[0]
+    def __init__(self, filepath):
+        xy = np.loadtxt(filepath, delimiter=',', dtype=np.float32)
+        self.len = xy.shape[0]
         self.x_data=torch.from_numpy(xy[:,:-1])
         self.y_data=torch.from_numpy(xy[:,[-1]])
 
@@ -15,10 +16,7 @@ class DiabetesDataset(Dataset):
         return self.len
 
 dataset = DiabetesDataset('diabetes.csv.gz')
-train_loader =DataLoader(dataset=dataset,
-batch_size=32,
-shuffle=True,
-num_workers=2)
+train_loader =DataLoader(dataset=dataset,batch_size=32,shuffle=True,num_workers=2)
 
 class Model(torch.nn.Module):#所有均要继承module
     def __init__(self):
@@ -30,7 +28,7 @@ class Model(torch.nn.Module):#所有均要继承module
         #self.linear=torch.sigmoid(1,1)
 
     def forward(self,x):
-        x=self.sigmoid(self.linear1(x))
+        x = self.sigmoid(self.linear1(x))
         x = self.sigmoid(self.linear2(x))
         x = self.sigmoid(self.linear3(x))
         return x
@@ -39,7 +37,7 @@ model = Model()
 criterion = torch.nn.BCELoss(reduction='mean')
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 if __name__ == '__main__':
-    for epoch in range(10):
+    for epoch in range(100):
         for i,data in enumerate(train_loader,0):
             inputs,labels=data
             y_pred =model(inputs)

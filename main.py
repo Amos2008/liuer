@@ -26,4 +26,4 @@ for w in np.arange(0.0, 4.1, 0.1):
     mse_list.append(l_sum/4)
 
 
-a = 5
+
