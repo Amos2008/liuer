@@ -82,15 +82,16 @@ def gradient(X,Y,Z,U,V):
        m[7] =- 2 * (nu - v) * z / p
        m[8] = -2 * (nu - v) * 1 / p
 
-       # m[9] = -2 * (mu - u) *  (l[1] * x + l[2] * y + l[3] * z + l[4])* x / p**2 -\
-       #        2 * (nu - v) *(l[5] * x + l[6] * y + l[7] * z + l[8])* x / p**2
-       # m[10] = -2 * (mu - u) * (l[1] * x + l[2] * y + l[3] * z + l[4]) * y /p ** 2 - \
-       #        2 * (nu - v) * (l[5] * x + l[6] * y + l[7] * z + l[8]) * y / p ** 2
-       # m[11] = -2 * (mu - u) * (l[1] * x + l[2] * y + l[3] * z + l[4]) * z /p ** 2 - \
-       #        2 * (nu - v) * (l[5] * x + l[6] * y + l[7] * z + l[8]) *  z/p ** 2
-       m[9]=0
-       m[10]=0
-       m[11]=0
+       m[9] = -2 * (mu - u) *  (l[1] * x + l[2] * y + l[3] * z + l[4])* x / p**2 -\
+              2 * (nu - v) *(l[5] * x + l[6] * y + l[7] * z + l[8])* x / p**2
+       m[10] = -2 * (mu - u) * (l[1] * x + l[2] * y + l[3] * z + l[4]) * y /p ** 2 - \
+              2 * (nu - v) * (l[5] * x + l[6] * y + l[7] * z + l[8]) * y / p ** 2
+       m[11] = -2 * (mu - u) * (l[1] * x + l[2] * y + l[3] * z + l[4]) * z /p ** 2 - \
+              2 * (nu - v) * (l[5] * x + l[6] * y + l[7] * z + l[8]) *  z/p ** 2
+
+       # m[9]=0
+       # m[10]=0
+       # m[11]=0
    return m/len(x)
 
 # loss_val = 0
@@ -99,10 +100,11 @@ def gradient(X,Y,Z,U,V):
 # loss_all =math.sqrt(loss_val/X.size)
 # print(l)
 # print(m)
-for epoch in range(500):
-  w = 0.000000001*gradient(X, Y, Z, U, V)
+for epoch in range(50):
+  w = 0.0000000001*gradient(X, Y, Z, U, V)
   loss_val = cost(X, Y, Z, U, V)
   l -= w
+
 loss_val = 0
 for x,y,z,u,v in zip(X, Y, Z, U, V):
    loss_val += cost(x,y,z,u,v)
@@ -110,17 +112,17 @@ loss_val = math.sqrt(loss_val / X.size)
 print(l)
 print("epoch",epoch,"loss_val", loss_val)
 
-X1 = data[0:83,:1]
-Y1 = data[0:83,1:2]
-Z1 = data[0:83,2:3]
-U1 = data[0:83,3:4]
-V1 = data[0:83,4:5]
-
-loss_ =0
-for x,y,z,u,v in zip(X1, Y1, Z1, U1, V1):
-    loss_+=cost(x,y,z,u,v)
-loss_ = math.sqrt(loss_ / X1.size)
-print(loss_)
+# X1 = data[0:83,:1]
+# Y1 = data[0:83,1:2]
+# Z1 = data[0:83,2:3]
+# U1 = data[0:83,3:4]
+# V1 = data[0:83,4:5]
+#
+# loss_ =0
+# for x,y,z,u,v in zip(X1, Y1, Z1, U1, V1):
+#     loss_+=cost(x,y,z,u,v)
+# loss_ = math.sqrt(loss_ / X1.size)
+# print(loss_)
 
 
 # def gradient(x,y,z,u,v):

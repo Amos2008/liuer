@@ -1,5 +1,14 @@
 import numpy as np
 import math
+
+class Circle(object):
+    pass
+
+circle1=Circle()
+circle2=Circle()
+
+
+
 # 生成水平视角宽度 a
 b = 100**2+9.15**2
 a = (100**2+9.15**2)**0.5

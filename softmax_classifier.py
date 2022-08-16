@@ -106,6 +106,7 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F  # 使用激活函数relu()的包
 import torch.optim as optim  # 优化器的包
 
+
 batch_size = 64
 # 对图像进行预处理，将图像转换为
 transform = transforms.Compose([
@@ -124,7 +125,8 @@ test_loader = DataLoader(test_dataset, shuffle=False, batch_size=batch_size)
 
 class Net(torch.nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        #super(Net, self).__init__()
+        torch.nn.Module.__init__(self)
         self.l1 = torch.nn.Linear(784, 512)
         self.l2 = torch.nn.Linear(512, 256)
         self.l3 = torch.nn.Linear(256, 128)
@@ -148,16 +150,15 @@ criterion = torch.nn.CrossEntropyLoss()
 # model.parameters()直接使用的模型的所有参数
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.5)  # momentum动量
 
-
-def train(epoch):
+epoch = 10
+def train():
     running_loss = 0.0
     # 返回了数据下标和数据
     for batch_idx, data in enumerate(train_loader, 0):
-        # 送入两个张量，一个张量是64个图像的特征，一个张量图片对应的数字
+        # 送入两个张量，一个张量是64个图像的特征，一个张量图片对应的数字  0表示从零开始
         inputs, target = data
         # 梯度归零
         optimizer.zero_grad()
-
         # forward+backward+update
         outputs = model(inputs)
         # 计算损失，用的交叉熵损失函数
@@ -170,10 +171,11 @@ def train(epoch):
         # 每300次输出一次
         running_loss += loss.item()
         if batch_idx % 300 == 299:
+            print("batch_idw:",batch_idx)
             print('[%d,%5d] loss:%.3f' % (epoch + 1, batch_idx + 1, running_loss / 300))
             running_loss = 0.0
 
-
+train()
 def test():
     correct = 0
     total = 0
@@ -190,7 +192,9 @@ def test():
     print('Accuracy on test set:%d %%' % (100 * correct / total))  # 正确的数量除以总数
 
 
+
+
 if __name__ == '__main__':
-    for epoch in range(10):
-        train(epoch)
+    # for epoch in range(1000):
+        train(1)
         test()

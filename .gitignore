@@ -1,3 +1,4 @@
-.idea/
-dataset/
-.pytest-cache/
+.idea
+dataset
+.pytest-cache
+dataset

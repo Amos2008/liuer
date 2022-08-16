@@ -13,7 +13,8 @@ y_data = torch.Tensor([[1], [1], [0]])
 # import torch.nn.functional as F
 class LogisticRegressionModel(torch.nn.Module):#所有均要继承module
     def __init__(self):
-        super(LogisticRegressionModel,self).__init__()#必须要有
+        #super(LogisticRegressionModel,self).__init__()#必须要有
+        torch.nn.Module.__init__(self)
         self.linear1=torch.nn.Linear(8,6)
         self.linear2=torch.nn.Linear(6,4)
         self.linear3=torch.nn.Linear(4,1)
@@ -34,13 +35,13 @@ optimizer = torch.optim.SGD(model.parameters(),lr=0.01)#告诉优化器哪些参
 for epoch in range(1000):
     y_pred=model(x_data)
     loss = criteration(y_pred,y_data)
-    print(epoch,loss)
+    print(epoch,loss.item())
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
 
 # print("w=",model.linear.weight.item())
 # print("b=",model.linear.bias.item())
-x_test =torch.Tensor([[1.0,5,4,3,2,1,0,5]])
+x_test =torch.Tensor([[2.0,8,2,4,5,3,5,1]])
 y_test = model(x_test)
 print(y_test.item())

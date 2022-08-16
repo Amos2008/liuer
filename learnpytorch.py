@@ -3,6 +3,10 @@ print(torch.__version__)
 learn_a = torch.FloatTensor(2,3)
 learn_a.requires_grad = True
 
+
+from sklearn.svm import SVR
+SVR(kernel='linear')
+
 print("learn",learn_a)
 learn_b = learn_a
 
@@ -40,7 +44,7 @@ def loss(x, y):
     y_pred = forward(x)
     return (y-y_pred)**2
 
-for epoch in range(100000):
+for epoch in range(10000):
     for x, y in zip(x_data, y_data):
         l=loss(x, y)
         l.backward()
